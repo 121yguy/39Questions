@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.myzhihu.dao.FavoritesDao">
+
+    <resultMap id="ResultMap" type="com.myzhihu.domain.dto.HomePageQuestion">
+        <result property="popularAnswer.id" column="aid"/>
+        <result property="popularAnswer.text" column="text"/>
+        <result property="question.id" column="id"/>
+        <result property="question.title" column="title"/>
+    </resultMap>
+    <select id="selectFavoritesByFolderId" resultType="com.myzhihu.domain.dto.HomePageQuestion" resultMap="ResultMap">
+        SELECT question.id AS id,
+               question.title,
+               answer.id AS aid,
+               answer.text AS text
+        FROM favorites
+                 JOIN answer
+                      ON favorites.answer_id = answer.id
+                 JOIN question
+                      ON answer.questionId = question.id
+        WHERE favorites.favorites_folder_id = #{fid}
+        LIMIT #{start}, 12
+    </select>
+    <select id="batchSelectByUidAndAid" resultType="java.util.Map">
+        SELECT answer_id,
+               IF(creator_id = 1, TRUE, FALSE) AS is_favored
+        FROM (
+                 SELECT DISTINCT answer_id, creator_id
+                 FROM favorites
+                          JOIN favorites_folder
+                               ON favorites.favorites_folder_id = favorites_folder.id
+                 WHERE creator_id = 1
+             ) AS a
+        WHERE answer_id IN
+        <foreach collection="answerIds" item="answerId" open="(" separator="," close=")">
+            #{answerId}
+        </foreach>
+          AND creator_id = #{userId}
+    </select>
+
+    <insert id="favorAll">
+        INSERT INTO favorites(answer_id, favorites_folder_id)
+        VALUES
+        <foreach collection="fids" item="fid" separator=",">
+            (#{aid}, #{fid})
+        </foreach>
+    </insert>
+
+    <insert id="cancelFavorAll">
+        DELETE FROM favorites
+        WHERE answer_id = #{aid}
+        AND favorites_folder_id
+        IN
+        <foreach collection="fids" item="fid" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </insert>
+
+
+</mapper>

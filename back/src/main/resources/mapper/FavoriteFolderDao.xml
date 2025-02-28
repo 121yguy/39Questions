@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.myzhihu.dao.FavoritesFolderDao">
+
+    <select id="folderIdFilter" resultType="java.lang.Integer">
+        SELECT id
+        FROM favorites_folder
+        WHERE creator_id = #{uid}
+        AND id IN
+        <foreach collection="fids" item="fid" open="(" separator="," close=")">
+            #{fid}
+        </foreach>
+    </select>
+
+</mapper>

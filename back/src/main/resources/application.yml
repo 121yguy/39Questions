@@ -1,0 +1,52 @@
+server:
+  port: ${your-server-port}
+
+spring:
+  datasource:
+    username: ${your-mysql-username}
+    password: ${your-mysql-password}
+    url: "jdbc:mysql:///${your-database-name}?useSSL=false"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: ${your-redis-password}
+  mail:
+    host: ${your-mail-host}
+    username: ${your-mail-username}
+    password: ${your-mail-password}
+    port: 465
+    default-encoding: UTF-8
+    properties:
+      "mail.smtp.socketFactory.class": javax.net.ssl.SSLSocketFactory
+      "mail.smtp.connection timeout": 5000
+      "mail.smtp.timeout": 3000
+      "mail.smtp.write timeout": 5000
+      "mail.smtp.auth": true
+      "mail.smtp.starttls.enable": true
+      "mail.smtp.starttls.required": true
+  web:
+    resources:
+      static-locations:
+        - file:${imageFolder.resFolderPath}
+        - file:${imageFolder.sysImagesFolderPath}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: ${your-rabbitmq-username}
+    password: ${your-rabbitmq-password}
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+imageFolder:
+  resFolderPath: "${your-resources-directory-path}" #资源文件夹路径
+  imagesFolderPath: "${your-images-directory-path}" #图片文件夹路径
+  sysImagesFolderPath: "${your-sys-images-directory-path}" #系统文件夹地址
