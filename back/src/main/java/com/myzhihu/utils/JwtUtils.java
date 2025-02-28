@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class JwtUtils {
 
-    private static final String secret = "121yguy";
+    private static final String secret = "password";
 
     public static String createJwt(Integer uid) {
         Map<String,Object> claim = new HashMap<>();
