@@ -44,7 +44,7 @@ public interface PendingAnswerDao {
     @Select("SELECT id, text, author_id AS authorId, question_id AS questionId, related_answer AS relatedAnswer FROM pending_answer WHERE id = #{id}")
     PendingAnswer selectAsPendingAnswerById(@Param("id") Integer id);
 
-    @Select("SELECT pending_answer.id, pending_answer.text, author_id AS authorId, question_id AS questionId, reviewed, title FROM pending_answer JOIN my_zhihu_db.question q on q.id = pending_answer.question_id WHERE author_id = #{uid} LIMIT #{start}, 12")
+    @Select("SELECT pending_answer.id, pending_answer.text, author_id AS authorId, question_id AS questionId, reviewed, title FROM pending_answer JOIN question q on q.id = pending_answer.question_id WHERE author_id = #{uid} LIMIT #{start}, 12")
     List<PendingAnswerWithQuestionTitle> selectByUid(@Param("uid") int uid, @Param("start") int start);
 
     @Select("SELECT id FROM pending_answer WHERE id = #{id} AND author_id = #{uid}")
