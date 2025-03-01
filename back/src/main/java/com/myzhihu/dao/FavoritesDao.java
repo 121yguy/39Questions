@@ -23,7 +23,7 @@ public interface FavoritesDao {
     @Select("SELECT favorites_folder.id FROM favorites_folder JOIN favorites f on favorites_folder.id = f.favorites_folder_id WHERE favorites_folder.creator_id = #{uid} AND answer_id = #{aid}")
     List<Integer> selectByUidAndAid(@Param("uid") int uid, @Param("aid") int aid);
 
-    @Select("SELECT favorites_folder_id FROM favorites_folder JOIN my_zhihu_db.favorites f on favorites_folder.id = f.favorites_folder_id WHERE answer_id = #{aid} AND favorites_folder_id = #{fid}")
+    @Select("SELECT favorites_folder_id FROM favorites_folder JOIN favorites f on favorites_folder.id = f.favorites_folder_id WHERE answer_id = #{aid} AND favorites_folder_id = #{fid}")
     Integer selectFolderIdsByAnswerIdAndFolderId(@Param("aid") int aid, @Param("fid") int fid);
 
     @MapKey("answer_id")
